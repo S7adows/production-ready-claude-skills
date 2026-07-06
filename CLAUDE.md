@@ -311,6 +311,18 @@ Docs are auto-deployed to GitHub Pages via `static.yml` on every push to main.
 # Marketplace: update .claude-plugin/marketplace.json
 ```
 
+### Portable External Skill Installer
+
+`scripts/install-agent-skills.sh` installs 5 external Claude Code skill packages globally (`~/.claude/skills/`), so they're available in **any** Claude Code session or machine — not just this repo:
+
+```bash
+./scripts/install-agent-skills.sh
+```
+
+Installs: `vercel-labs/agent-skills`, `obra/superpowers`, `pbakaus/impeccable`, `rebelytics/one-skill-to-rule-them-all` (task-observer), `thedotmack/claude-mem`. Idempotent — safe to re-run; each step warns and continues on failure rather than aborting.
+
+For **this repo specifically**, `.claude/hooks/session-start.sh` runs the same provisioning automatically on every Claude Code on the web session (see `.claude/settings.json`'s `SessionStart` hook) — since each web session is a fresh ephemeral container, global installs don't otherwise survive between sessions. The standalone script exists for using these skills in other repos or local Claude Code installs.
+
 ## Development Environment
 
 **No build system or test frameworks** — intentional design for portability.
